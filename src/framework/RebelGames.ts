@@ -289,8 +289,26 @@ class Shader {
         }
 }
 
-class Input {
-        constructor() { }
+class EvenHandler {
+        public keyCallback: { [keyCode : number]: () => void; } = {};
+        public keyPressed : { [keyCode : number]: boolean; } = {};
 
+        constructor() {
+                document.addEventListener('keyup', this.onKeyUp);
+                document.addEventListener('keydown', this.onKeyDown);
+        }
 
+        public keyboardcallback = (keyCode: number, f: () => void): void => {
+                this.keyPressed[keyCode] = false;
+        }
+
+        public onKeyDown = (event: KeyboardEvent) : void => {
+                event.preventDefault();
+                this.keyPressed[event.keyCode] = true;
+        }
+
+        public onKeyUp = (event: KeyboardEvent) :void => {
+                event.preventDefault();
+                this.keyPressed[event.keyCode] = false;
+        }
 }
