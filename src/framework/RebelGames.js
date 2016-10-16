@@ -9,18 +9,41 @@ var Vector2 = (function () {
     Vector2.subtract = function (left, right) {
         return new Vector2(left.x - right.x, left.y - right.y);
     };
-    Vector2.multiply = function (factor, vector) {
+    Vector2.multiplyFactor = function (factor, vector) {
         return new Vector2(vector.x * factor, vector.y * factor);
+    };
+    Vector2.multiplyVector = function (left, right) {
+        return new Vector2(left.x * right.x, left.y * right.y);
+    };
+    Vector2.divide = function (left, right) {
+        return new Vector2(left.x / right.x, left.y / right.y);
     };
     Vector2.dot = function (left, right) {
         return left.x * right.x + left.y * right.y;
     };
-    Vector2.normalize = function () {
+    Vector2.magnitute = function (vector) {
+        return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+    };
+    Vector2.normalize = function (vector) {
+        var mag = Vector2.magnitute(vector);
+        return new Vector2(vector.x / mag, vector.y / mag);
     };
     Vector2.distance = function (left, right) {
         var dx = left.x - right.x;
         var dy = left.y - right.y;
         return Math.sqrt(dx * dx + dy * dy);
+    };
+    Vector2.equals = function (left, right) {
+        if (left.x == right.x && left.y == right.y)
+            return true;
+        else
+            return false;
+    };
+    Vector2.notEquals = function (left, right) {
+        if (!Vector2.equals(left, right))
+            return true;
+        else
+            return false;
     };
     return Vector2;
 }());
@@ -36,13 +59,24 @@ var Vector3 = (function () {
     Vector3.subtract = function (left, right) {
         return new Vector3(left.x - right.x, left.y - right.y, left.z - right.z);
     };
-    Vector3.multiply = function (factor, vector) {
+    Vector3.multiplyFactor = function (factor, vector) {
         return new Vector3(factor * vector.x, factor * vector.y, factor * vector.z);
     };
-    Vector3.dot = function (right, left) {
+    Vector3.multiplyVector = function (left, right) {
+        return new Vector3(left.x * right.x, left.y * right.y, left.z * right.z);
+    };
+    Vector3.divide = function (left, right) {
+        return new Vector3(left.x / right.x, left.y / right.y, left.z / right.z);
+    };
+    Vector3.dot = function (left, right) {
         return right.x * left.x + right.y * left.y + right.z * left.z;
     };
-    Vector3.normalize = function () {
+    Vector3.magnitute = function (vector) {
+        return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+    };
+    Vector3.normalize = function (vector) {
+        var mag = Vector2.magnitute(vector);
+        return new Vector3(vector.x / mag, vector.y / mag, vector.z / mag);
     };
     Vector3.cross = function (left, right) {
         return new Vector3(left.y * right.z - left.z * right.y, left.x * right.z - left.z * right.x, left.x * right.y - left.y * right.x);
@@ -52,6 +86,18 @@ var Vector3 = (function () {
         var dy = left.y - right.y;
         var dz = left.z - right.z;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    };
+    Vector3.equals = function (left, right) {
+        if (left.x == right.x && left.y == right.y && left.z == right.z)
+            return true;
+        else
+            return false;
+    };
+    Vector3.notEquals = function (left, right) {
+        if (!Vector2.equals(left, right))
+            return true;
+        else
+            return false;
     };
     return Vector3;
 }());
@@ -74,10 +120,18 @@ var Vector4 = (function () {
     Vector4.multiplyVector = function (left, right) {
         return new Vector4(left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w);
     };
-    Vector4.dot = function (right, left) {
+    Vector4.divide = function (left, right) {
+        return new Vector4(left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w);
+    };
+    Vector4.dot = function (left, right) {
         return right.x * left.x + right.y * left.y + right.z * left.z + right.w * left.w;
     };
-    Vector4.normalize = function () {
+    Vector4.magnitude = function (vector) {
+        return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w);
+    };
+    Vector4.normalize = function (vector) {
+        var mag = Vector4.magnitude(vector);
+        return new Vector4(vector.x / mag, vector.y / mag, vector.z / mag, vector.w / mag);
     };
     Vector4.cross = function (left, right) {
         return new Vector3(left.y * right.z - left.z * right.y, left.x * right.z - left.z * right.x, left.x * right.y - left.y * right.x);
@@ -107,7 +161,16 @@ var Matrix4 = (function () {
     Matrix4.identify = function () {
         Matrix4.diagonal(1);
     };
-    Matrix4.add = function () {
+    Matrix4.multiply = function (left, right) {
+        var result = new Matrix4();
+        for (var x = 0; x < 4; x++) {
+            for (var y = 0; y < 4; y++) {
+            }
+        }
+    };
+    Matrix4.subtract = function () {
+    };
+    Matrix4.rotate = function (rotation) {
     };
     Matrix4.translate = function (translation) {
         var matrix = Matrix4.diagonal(1);
@@ -123,43 +186,50 @@ var Matrix4 = (function () {
         matrix[2 + 2 * 4] = scale.z;
         return matrix;
     };
+    Matrix4.orthoMatrix = function (left, right, bottom, top, near, far, dest) {
+        dest = new Matrix4.identify();
+    };
+    Matrix4.perspMatrix = function (fov, aspect, near, far, dest) {
+    };
+    Matrix4.lookAt = function (cameraPos, target, up, dest) {
+    };
     return Matrix4;
 }());
 var Canvas = (function () {
     function Canvas() {
     }
-    Canvas.initCanvas = function (width, height) {
+    Canvas.initWebGL = function () {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
         var canvas = document.createElement("canvas");
+        var webGL = canvas.getContext("webgl");
+        webGL.enable(webGL.DEPTH_TEST);
         canvas.width = width;
         canvas.height = height;
         document.body.appendChild(canvas);
-        return canvas;
+        if (!webGL) {
+            console.log("Could not initiate webGL Canvas");
+            return;
+        }
+        return webGL;
     };
     return Canvas;
 }());
-var DrawableObjects = (function () {
-    function DrawableObjects() {
+var Utils = (function () {
+    function Utils() {
     }
-    DrawableObjects.drawRectangle = function (context, vector, width, height, color) {
-        if (color == null) {
-            context.rect(vector.x, vector.y, width, height);
-        }
-        else {
-            context.fillStyle = color;
-            context.fillRect(vector.x, vector.y, width, height);
-        }
+    Utils.read_file = function () {
     };
-    DrawableObjects.drawArc = function (context, vector, radius, startAngle, endAngle, antiClockwise, color) {
-        if (color == null) {
-            context.arc(vector.x, vector.y, radius, startAngle, endAngle, antiClockwise);
-        }
-        else {
-            context.fillStyle = color;
-            context.arc(vector.x, vector.y, radius, startAngle, endAngle);
-            context.fill();
-        }
+    return Utils;
+}());
+var Shader = (function () {
+    function Shader() {
+    }
+    Shader.loadFromFile = function (vertexPath, fragmentPath) {
     };
-    return DrawableObjects;
+    Shader.load = function () {
+    };
+    return Shader;
 }());
 var Input = (function () {
     function Input() {

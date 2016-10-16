@@ -5,7 +5,7 @@ html, body {
 }
 
 canvas {
-        background-color: black;
+        background-color: grey;
         width: inherit;
         height: inherit;
 }

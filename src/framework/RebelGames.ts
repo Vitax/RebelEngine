@@ -9,16 +9,30 @@ class Vector2 {
                 return new Vector2(left.x - right.x, left.y - right.y);
         }
 
-        static multiply(factor: number, vector: Vector2) {
+        static multiplyFactor(factor: number, vector: Vector2) {
                 return new Vector2(vector.x * factor, vector.y * factor);
+        }
+
+        static multiplyVector(left: Vector2, right: Vector2) {
+                return new Vector2(left.x * right.x, left.y * right.y);
+        }
+
+        static divide(left: Vector2, right: Vector2) {
+                return new Vector2(left.x / right.x, left.y / right.y);
         }
 
         static dot(left: Vector2, right: Vector2) {
                 return left.x * right.x + left.y * right.y;
         }
 
-        static normalize() {
+        static magnitute(vector: Vector2) {
+                return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+        }
 
+        static normalize(vector: Vector2) {
+                var mag = Vector2.magnitute(vector);
+
+                return new Vector2(vector.x / mag, vector.y / mag);
         }
 
         static distance(left: Vector2, right: Vector2) {
@@ -26,6 +40,20 @@ class Vector2 {
                 var dy = left.y - right.y;
 
                 return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        static equals(left: Vector2, right: Vector2) {
+                if(left.x == right.x && left.y == right.y)
+                        return true;
+                else
+                        return false;
+        }
+
+        static notEquals(left: Vector2, right: Vector2) {
+                if(!Vector2.equals(left, right))
+                        return true;
+                else
+                        return false;
         }
 }
 
@@ -40,16 +68,30 @@ class Vector3 {
                 return new Vector3(left.x - right.x, left.y - right.y, left.z - right.z);
         }
 
-        static multiply(factor: number, vector: Vector3) {
+        static multiplyFactor(factor: number, vector: Vector3) {
                 return new Vector3(factor * vector.x, factor * vector.y, factor * vector.z);
         }
 
-        static dot(right: Vector3, left: Vector3) {
+        static multiplyVector(left: Vector3, right: Vector3) {
+                return new Vector3(left.x * right.x, left.y * right.y, left.z * right.z);
+        }
+
+        static divide(left: Vector3, right: Vector3) {
+                return new Vector3(left.x / right.x, left.y / right.y, left.z / right.z);
+        }
+
+        static dot(left: Vector3, right: Vector3) {
                 return right.x * left.x + right.y * left.y + right.z * left.z;
         }
 
-        static normalize() {
+        static magnitute(vector: Vector3) {
+                return  Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+        }
 
+        static normalize(vector: Vector3) {
+                var mag = Vector2.magnitute(vector);
+
+                return new Vector3(vector.x / mag, vector.y / mag, vector.z / mag);
         }
 
         static cross(left: Vector3, right: Vector3) {
@@ -64,6 +106,20 @@ class Vector3 {
                 var dz = left.z - right.z;
 
                 return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        static equals(left: Vector3, right: Vector3) {
+                if(left.x == right.x && left.y == right.y && left.z == right.z)
+                        return true;
+                else
+                        return false;
+        }
+
+        static notEquals(left: Vector3, right: Vector3) {
+                if(!Vector2.equals(left, right))
+                        return true;
+                else
+                        return false;
         }
 }
 
@@ -86,12 +142,22 @@ class Vector4 {
                 return new Vector4(left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w);
         }
 
-        static dot(right: Vector4, left: Vector4) {
+        static divide(left: Vector4, right: Vector4) {
+                return new Vector4(left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w);
+
+        }
+        static dot(left: Vector4, right: Vector4) {
                 return right.x * left.x + right.y * left.y + right.z * left.z + right.w * left.w;
         }
 
-        static normalize() {
+        static magnitude(vector : Vector4) {
+                return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w);
+        }
 
+        static normalize(vector: Vector4) {
+                var mag = Vector4.magnitude(vector);
+
+                return new Vector4(vector.x / mag, vector.y / mag, vector.z / mag, vector.w / mag);
         }
 
         static cross(left: Vector3, right: Vector3) {
@@ -127,7 +193,21 @@ class Matrix4 {
                 Matrix4.diagonal(1);
         }
 
-        static add() {
+        static multiply(left: Matrix4, right: Matrix4) {
+                var result = new Matrix4();
+
+                for(var x = 0; x < 4; x++) {
+                        for(var y = 0; y < 4; y++) {
+
+                        }
+                }
+        }
+
+        static subtract() {
+
+        }
+
+        static rotate(rotation: Vector3) {
 
         }
 
@@ -150,43 +230,62 @@ class Matrix4 {
 
                 return matrix;
         }
+
+        static orthoMatrix(left: number, right: number, bottom: number, top: number, near: number, far: number, dest: Matrix4 ) {
+                dest = new Matrix4.identify();
+
+        }
+
+        static perspMatrix(fov: number, aspect: number, near: number, far: number, dest: Matrix4) {
+
+        }
+
+        static lookAt(cameraPos: Vector3, target: Vector3, up: Vector3, dest: Matrix4) {
+
+        }
 }
 
 class Canvas {
         constructor() { }
 
-        static initCanvas(width, height) {
+        static initWebGL() {
+                var width = window.innerWidth;
+                var height = window.innerHeight;
+
                 var canvas = document.createElement("canvas");
+                var webGL = canvas.getContext("webgl");
+
+                webGL.enable(webGL.DEPTH_TEST);
 
                canvas.width = width;
                canvas.height = height;
 
                document.body.appendChild(canvas);
 
-               return canvas;
+               if(!webGL) {
+                       console.log("Could not initiate webGL Canvas");
+                       return;
+               }
+
+               return webGL;
         }
 }
 
-class DrawableObjects {
+class Utils{
+        static read_file() {
+
+        }
+}
+
+class Shader {
         constructor() { }
 
-        static drawRectangle(context: CanvasRenderingContext2D, vector: Vector2, width: number, height: number, color: string) {
-                if (color == null) {
-                        context.rect(vector.x, vector.y, width, height);
-                } else {
-                        context.fillStyle = color;
-                        context.fillRect(vector.x, vector.y, width, height);
-                }
+        static loadFromFile(vertexPath: string, fragmentPath: string) {
+
         }
 
-        static drawArc(context: CanvasRenderingContext2D, vector: Vector2, radius: number, startAngle: number, endAngle: number, antiClockwise: boolean, color: string) {
-                if(color == null) {
-                        context.arc(vector.x, vector.y, radius, startAngle, endAngle, antiClockwise);
-                } else {
-                        context.fillStyle = color;
-                        context.arc(vector.x, vector.y, radius, startAngle, endAngle);
-                        context.fill();
-                }
+        static load() {
+
         }
 }
 
