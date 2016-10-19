@@ -1,18 +1,25 @@
 class game {
-        constructor() {
+        static webGL;
+        static input;
+        static player;
+
+        constructor() { }
+        static init() {
+                this.input = new InputHandler();
+                this.webGL = Canvas.initWebGL();
+                this.player = Player;
         }
 
         static run() {
-                game.draw();
+                // TODO: Figure out how a game loop works in TypeScript
+                game.init();
+                window.setInterval(game.tick, 1000/ 30);
         }
 
         static draw() {
-                var webGl = Canvas.initWebGL();
-
         }
 
-        static update() {
-
+        static tick()  {
         }
 }
 

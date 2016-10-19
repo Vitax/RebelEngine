@@ -1,3 +1,15 @@
+/*
+ *      Author:         Caglar Özel
+ *      Date:           19.October.2016
+ *      Copyright:
+*/
+
+
+//  ###    ###       #####    #########   ##   ##
+//  ## #  # ##     ##    ##      ##       ##   ##
+//  ##  ##  ##    ##########     ##       #######
+//  ##      ##   ##        ##    ##       ##   ##
+//  ##      ##  ##          ##   ##       ##   ##
 class Vector2 {
         constructor(public x: number, public y: number) { }
 
@@ -245,6 +257,16 @@ class Matrix4 {
         }
 }
 
+//   ######   #######  ########  ########  ########  ########
+//  ##    ##  ##  ##         ##  ##        ##           ##
+//  ##    ##  #######        ##  #####     ##           ##
+//  ##    ##  ##  ##        ##   ##        ##           ##
+//   ######   #######  #####     ########  ########     ##
+
+class Camera {
+
+}
+
 class Canvas {
         constructor() { }
 
@@ -257,17 +279,18 @@ class Canvas {
 
                 webGL.enable(webGL.DEPTH_TEST);
 
-               canvas.width = width;
-               canvas.height = height;
+                canvas.width = width;
+                canvas.height = height;
 
-               document.body.appendChild(canvas);
+                document.body.appendChild(canvas);
 
-               if(!webGL) {
-                       console.log("Could not initiate webGL Canvas");
-                       return;
-               }
+                if(!webGL) {
+                        console.log("Could not initiate webGL Canvas");
+                        return;
+                }
 
-               return webGL;
+                console.log("initialized WebGL canvas !");
+                return webGL;
         }
 }
 
@@ -289,26 +312,74 @@ class Shader {
         }
 }
 
-class EvenHandler {
-        public keyCallback: { [keyCode : number]: () => void; } = {};
-        public keyPressed : { [keyCode : number]: boolean; } = {};
+class Player {
+        constructor() { }
 
+        static draw() {
+
+        }
+
+        static tick(input: InputHandler) {
+                input.keyPressed
+        }
+}
+
+//   ##  ###     ##  ######  ##   ##  ########
+//   ##  ## ##   ##  ##  ##  ##   ##     ##
+//   ##  ##   ## ##  ######  ##   ##     ##
+//   ##  ##     ###  ##      ##   ##     ##
+//   ##  ##      ##  ##      #######     ##
+
+class InputHandler {
         constructor() {
-                document.addEventListener('keyup', this.onKeyUp);
-                document.addEventListener('keydown', this.onKeyDown);
+                window.addEventListener('keyup', this.onKeyUp);
+                window.addEventListener('keydown', this.onKeyDown);
+                console.log("InputHandler instance created!");
         }
 
-        public keyboardcallback = (keyCode: number, f: () => void): void => {
-                this.keyPressed[keyCode] = false;
+        public Keys = {
+                // Keyboard
+                ZERO: 48,
+                ONE: 49,
+                TWO: 50,
+                THREE: 51,
+                FOUR: 52,
+                FIVE: 53,
+                SIX: 54,
+                SEVEN: 55,
+                EIGHT: 56,
+                NINE: 57,
+
+                Q: 81,
+                E: 69,
+
+                W: 87, // "UP"
+                S: 83, // "DOWN"
+                A: 65, // "LEFT"
+                D: 68, // "RIGHT"
+
+                SPACEBAR: 32,
+
+                // Arrow Keys
+                LEFT: 37,
+                UP: 38,
+                RIGHT: 39,
+                DOWN: 40
         }
 
-        public onKeyDown = (event: KeyboardEvent) : void => {
+        private _pressed: {[keyCode: number] : any;} = {};
+
+        public keyPressed = (keyCode: number) => {
+                return this._pressed[keyCode];
+        }
+
+        private onKeyUp = (event: KeyboardEvent): void => {
                 event.preventDefault();
-                this.keyPressed[event.keyCode] = true;
+                delete this._pressed[event.keyCode];
         }
 
-        public onKeyUp = (event: KeyboardEvent) :void => {
+        private onKeyDown = (event: KeyboardEvent) : void => {
                 event.preventDefault();
-                this.keyPressed[event.keyCode] = false;
+                this._pressed[event.keyCode] = true;
         }
 }
