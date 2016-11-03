@@ -1,40 +1,41 @@
 /*
  *      Author:         Caglar Özel
  *      Date:           19.October.2016
- *      Copyright:
+ *      Copyb:
 */
 
 
-//  ###    ###       #####    #########   ##   ##
+//  ###    ###      ######    #########   ##   ##
 //  ## #  # ##     ##    ##      ##       ##   ##
 //  ##  ##  ##    ##########     ##       #######
 //  ##      ##   ##        ##    ##       ##   ##
 //  ##      ##  ##          ##   ##       ##   ##
+
 class Vector2 {
         constructor(public x: number, public y: number) { }
 
-        static add(left: Vector2, right: Vector2) {
-                return new Vector2(left.x + right.x, left.y + right.y);
+        static add(a: Vector2, b: Vector2) {
+                return new Vector2(a.x + b.x, a.y + b.y);
         }
 
-        static subtract(left: Vector2, right: Vector2) {
-                return new Vector2(left.x - right.x, left.y - right.y);
+        static subtract(a: Vector2, b: Vector2) {
+                return new Vector2(a.x - b.x, a.y - b.y);
         }
 
         static multiplyFactor(factor: number, vector: Vector2) {
                 return new Vector2(vector.x * factor, vector.y * factor);
         }
 
-        static multiplyVector(left: Vector2, right: Vector2) {
-                return new Vector2(left.x * right.x, left.y * right.y);
+        static multiplyVector(a: Vector2, b: Vector2) {
+                return new Vector2(a.x * b.x, a.y * b.y);
         }
 
-        static divide(left: Vector2, right: Vector2) {
-                return new Vector2(left.x / right.x, left.y / right.y);
+        static divide(a: Vector2, b: Vector2) {
+                return new Vector2(a.x / b.x, a.y / b.y);
         }
 
-        static dot(left: Vector2, right: Vector2) {
-                return left.x * right.x + left.y * right.y;
+        static dot(a: Vector2, b: Vector2) {
+                return a.x * b.x + a.y * b.y;
         }
 
         static magnitute(vector: Vector2) {
@@ -47,22 +48,22 @@ class Vector2 {
                 return new Vector2(vector.x / mag, vector.y / mag);
         }
 
-        static distance(left: Vector2, right: Vector2) {
-                var dx = left.x - right.x;
-                var dy = left.y - right.y;
+        static distance(a: Vector2, b: Vector2) {
+                var dx = a.x - b.x;
+                var dy = a.y - b.y;
 
                 return Math.sqrt(dx * dx + dy * dy);
         }
 
-        static equals(left: Vector2, right: Vector2) {
-                if(left.x == right.x && left.y == right.y)
+        static equals(a: Vector2, b: Vector2) {
+                if(a.x == b.x && a.y == b.y)
                         return true;
                 else
                         return false;
         }
 
-        static notEquals(left: Vector2, right: Vector2) {
-                if(!Vector2.equals(left, right))
+        static notEquals(a: Vector2, b: Vector2) {
+                if(!Vector2.equals(a, b))
                         return true;
                 else
                         return false;
@@ -72,28 +73,28 @@ class Vector2 {
 class Vector3 {
         constructor(public x: number, public y: number, public z: number) { }
 
-        static add(left: Vector3, right: Vector3) {
-                return new Vector3(left.x + right.x, left.y + right.y, left.z + right.z);
+        static add(a: Vector3, b: Vector3) {
+                return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
         }
 
-        static subtract(left: Vector3, right: Vector3) {
-                return new Vector3(left.x - right.x, left.y - right.y, left.z - right.z);
+        static subtract(a: Vector3, b: Vector3) {
+                return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
         }
 
         static multiplyFactor(factor: number, vector: Vector3) {
                 return new Vector3(factor * vector.x, factor * vector.y, factor * vector.z);
         }
 
-        static multiplyVector(left: Vector3, right: Vector3) {
-                return new Vector3(left.x * right.x, left.y * right.y, left.z * right.z);
+        static multiplyVector(a: Vector3, b: Vector3) {
+                return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
         }
 
-        static divide(left: Vector3, right: Vector3) {
-                return new Vector3(left.x / right.x, left.y / right.y, left.z / right.z);
+        static divide(a: Vector3, b: Vector3) {
+                return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
         }
 
-        static dot(left: Vector3, right: Vector3) {
-                return right.x * left.x + right.y * left.y + right.z * left.z;
+        static dot(a: Vector3, b: Vector3) {
+                return b.x * a.x + b.y * a.y + b.z * a.z;
         }
 
         static magnitute(vector: Vector3) {
@@ -106,29 +107,29 @@ class Vector3 {
                 return new Vector3(vector.x / mag, vector.y / mag, vector.z / mag);
         }
 
-        static cross(left: Vector3, right: Vector3) {
-                return new Vector3(left.y * right.z - left.z * right.y,
-                                   left.x * right.z - left.z * right.x,
-                                   left.x * right.y - left.y * right.x);
+        static cross(a: Vector3, b: Vector3) {
+                return new Vector3(a.y * b.z - a.z * b.y,
+                                   a.x * b.z - a.z * b.x,
+                                   a.x * b.y - a.y * b.x);
         }
 
-        static distance(left: Vector3, right: Vector3) {
-                var dx = left.x - right.x;
-                var dy = left.y - right.y;
-                var dz = left.z - right.z;
+        static distance(a: Vector3, b: Vector3) {
+                var dx = a.x - b.x;
+                var dy = a.y - b.y;
+                var dz = a.z - b.z;
 
                 return Math.sqrt(dx * dx + dy * dy + dz * dz);
         }
 
-        static equals(left: Vector3, right: Vector3) {
-                if(left.x == right.x && left.y == right.y && left.z == right.z)
+        static equals(a: Vector3, b: Vector3) {
+                if(a.x == b.x && a.y == b.y && a.z == b.z)
                         return true;
                 else
                         return false;
         }
 
-        static notEquals(left: Vector3, right: Vector3) {
-                if(!Vector2.equals(left, right))
+        static notEquals(a: Vector3, b: Vector3) {
+                if(!Vector3.equals(a, b))
                         return true;
                 else
                         return false;
@@ -138,28 +139,28 @@ class Vector3 {
 class Vector4 {
         constructor(public x: number, public y: number, public z: number, public w: number) { }
 
-        static add(left: Vector4, right: Vector4) {
-                return new Vector4(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
+        static add(a: Vector4, b: Vector4) {
+                return new Vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
         }
 
-        static subtract(left: Vector4, right: Vector4) {
-                return new Vector4(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
+        static subtract(a: Vector4, b: Vector4) {
+                return new Vector4(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
         }
 
         static multiplyFactor(factor: number, vector: Vector4) {
                 return new Vector4(factor * vector.x, factor * vector.y, factor * vector.z, factor * vector.w);
         }
 
-        static multiplyVector(left: Vector4, right: Vector4) {
-                return new Vector4(left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w);
+        static multiplyVector(a: Vector4, b: Vector4) {
+                return new Vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
         }
 
-        static divide(left: Vector4, right: Vector4) {
-                return new Vector4(left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w);
+        static divide(a: Vector4, b: Vector4) {
+                return new Vector4(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w);
 
         }
-        static dot(left: Vector4, right: Vector4) {
-                return right.x * left.x + right.y * left.y + right.z * left.z + right.w * left.w;
+        static dot(a: Vector4, b: Vector4) {
+                return b.x * a.x + b.y * a.y + b.z * a.z + b.w * a.w;
         }
 
         static magnitude(vector : Vector4) {
@@ -172,47 +173,72 @@ class Vector4 {
                 return new Vector4(vector.x / mag, vector.y / mag, vector.z / mag, vector.w / mag);
         }
 
-        static cross(left: Vector3, right: Vector3) {
-                return new Vector3(left.y * right.z - left.z * right.y,
-                                   left.x * right.z - left.z * right.x,
-                                   left.x * right.y - left.y * right.x);
+        static cross(a: Vector3, b: Vector3) {
+                return new Vector3(a.y * b.z - a.z * b.y,
+                                   a.x * b.z - a.z * b.x,
+                                   a.x * b.y - a.y * b.x);
         }
 
-        static distance(left: Vector3, right: Vector3) {
-                var dx = left.x - right.x;
-                var dy = left.y - right.y;
-                var dz = left.z - right.z;
+        static distance(a: Vector3, b: Vector3) {
+                var dx = a.x - b.x;
+                var dy = a.y - b.y;
+                var dz = a.z - b.z;
 
                 return Math.sqrt(dx * dx + dy * dy + dz * dz);
         }
+
+        static equals(a: Vector4, b: Vector4) {
+                if(a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w)
+                        return true;
+                else
+                        return false;
+        }
+
+        static notEquals(a: Vector4, b: Vector4) {
+                if(!Vector4.equals(a, b))
+                        return true;
+                else
+                        return false;
+        }
 }
 
-class Matrix4 {
-        constructor(public elements: number[] = [4 * 4]) { }
+class Matrix3 {
+        private elements = new Float32Array(9);
+
+        constructor(elements: number[] = []) {
+                for(var i = 0; i < 9; i++) {
+                        elements[i] = 0;
+                }
+        }
 
         static diagonal(diagonal: number) {
-                for (var i = 0; i < Matrix4.prototype.elements.length; i++) {
-                        Matrix4.prototype.elements[i] = 0;
+                for (var i = 0; i < 3 * 3; i++) {
+                        this[i] = 0;
                 }
 
-                Matrix4.prototype.elements[0 + 0 * 4] = diagonal;
-                Matrix4.prototype.elements[1 + 1 * 4] = diagonal;
-                Matrix4.prototype.elements[2 + 2 * 4] = diagonal;
-                Matrix4.prototype.elements[3 + 3 * 4] = diagonal;
+                this[0 + 0 * 3] = diagonal;
+                this[1 + 1 * 3] = diagonal;
+                this[2 + 2 * 3] = diagonal;
         }
 
         static identify() {
-                Matrix4.diagonal(1);
+                return new Matrix3.diagonal(1);
         }
 
-        static multiply(left: Matrix4, right: Matrix4) {
-                var result = new Matrix4();
+        static multiply(a: Matrix3, b: Matrix3) {
+                var result: Matrix3 = Matrix3.identify();
 
-                for(var x = 0; x < 4; x++) {
-                        for(var y = 0; y < 4; y++) {
-
+                for(var row = 0; row < 3; row++) {
+                        for(var col = 0; col < 3; col++) {
+                                var sum = 0;
+                                for(var e = 0; e < 3; e++) {
+                                        sum += a[e + row * 3] * b[col + e * 3];
+                                }
+                                result[col + row * 3] = sum;
                         }
                 }
+
+                return result;
         }
 
         static subtract() {
@@ -221,6 +247,99 @@ class Matrix4 {
 
         static rotate(rotation: Vector3) {
 
+        }
+
+        static translate(translation: Vector3) {
+                var result: Matrix3 = Matrix3.identify();
+
+                result[0 + 2 * 3] = translation.x;
+                result[1 + 2 * 3] = translation.y;
+                result[2 + 2 * 3] = translation.z;
+
+                return result;
+        }
+
+        static scale(scale : Vector3) {
+                var result: Matrix3 = Matrix3.identify();
+
+                result[0 + 0 * 3] = scale.x;
+                result[1 + 1 * 3] = scale.y;
+                result[2 + 2 * 3] = scale.z;
+
+                return result;
+        }
+}
+
+class Matrix4 {
+        private elements = new Float32Array(16);
+
+        constructor(elements: number[] = []) {
+                for(var i = 0; i < 16; i++) {
+                        elements[i] = 0;
+                }
+        }
+
+        static diagonal(diagonal: number) {
+                for (var i = 0; i < 4 * 4; i++) {
+                        this[i] = 0;
+                }
+
+                this[0 + 0 * 4] = diagonal;
+                this[1 + 1 * 4] = diagonal;
+                this[2 + 2 * 4] = diagonal;
+                this[3 + 3 * 4] = diagonal;
+        }
+
+        static identify() {
+                return new Matrix4.diagonal(1);
+        }
+
+        static multiply(a: Matrix4, b: Matrix4) {
+                var result: Matrix4 = Matrix4.identify();
+
+                for(var row = 0; row < 4; row++) {
+                        for(var col = 0; col < 4; col++) {
+                                var sum: number = 0;
+                                for(var e = 0; e < 4; e++) {
+                                        sum += a[e + row * 4] * b[col + e * 4];
+                                }
+                        }
+                        result[col + row * 4] = sum;
+                }
+
+                return result;
+        }
+
+        static divide(a: Matrix4, b: Matrix4) {
+                var result: Matrix4 = Matrix4.identify();
+
+                for(var row = 0; row < 4; row++) {
+                        for(var col = 0; col < 4; col++) {
+                                var sum: number = 0;
+                                for(var e = 0; e < 4; e++) {
+                                        sum += a[e + row * 4] / b[col + e * 4];
+                                }
+                        }
+                        result[col + row * 4] = sum;
+                }
+
+                return result;
+        }
+
+        static subtract(a: Matrix4, b: Matrix4) {
+                var result: Matrix4 = Matrix4.identify();
+
+                for(var row = 0; row < 4; row++) {
+                        for(var col = 0; col < 4; col++) {
+                                var sum: number = 0;
+                                for(var e = 0; e < 4; e++) {
+                                        sum += a[e + row * 4] - b[col + e * 4];
+                                }
+                        }
+                        result[col + row * 4] = sum;
+                }
+
+                return result;
         }
 
         static translate(translation: Vector3) {
@@ -236,15 +355,19 @@ class Matrix4 {
         static scale(scale : Vector3) {
                 var matrix = Matrix4.diagonal(1);
 
-                matrix[0 + 3 * 4] = scale.x;
+                matrix[0 + 0 * 4] = scale.x;
                 matrix[1 + 1 * 4] = scale.y;
                 matrix[2 + 2 * 4] = scale.z;
 
                 return matrix;
         }
 
+        static rotate(rotation: Vector3) {
+
+        }
+
         static orthoMatrix(left: number, right: number, bottom: number, top: number, near: number, far: number, dest: Matrix4 ) {
-                dest = new Matrix4.identify();
+                dest = Matrix4.identify();
 
         }
 
@@ -257,11 +380,11 @@ class Matrix4 {
         }
 }
 
-//   ######   #######  ########  ########  ########  ########
-//  ##    ##  ##  ##         ##  ##        ##           ##
-//  ##    ##  #######        ##  #####     ##           ##
-//  ##    ##  ##  ##        ##   ##        ##           ##
-//   ######   #######  #####     ########  ########     ##
+//   ######   #######  ##########  ########  ########  ########
+//  ##    ##  ##  ##         ##    ##        ##           ##
+//  ##    ##  #######        ##    #####     ##           ##
+//  ##    ##  ##  ##        ##     ##        ##           ##
+//   ######   #######  #####       ########  ########     ##
 
 class Camera {
 
@@ -312,18 +435,6 @@ class Shader {
         }
 }
 
-class Player {
-        constructor() { }
-
-        static draw() {
-
-        }
-
-        static tick(input: InputHandler) {
-                input.keyPressed
-        }
-}
-
 //   ##  ###     ##  ######  ##   ##  ########
 //   ##  ## ##   ##  ##  ##  ##   ##     ##
 //   ##  ##   ## ##  ######  ##   ##     ##
@@ -350,13 +461,45 @@ class InputHandler {
                 EIGHT: 56,
                 NINE: 57,
 
-                Q: 81,
-                E: 69,
+                F1: 112,
+                F2: 113,
+                F3: 114,
+                F4: 115,
+                F5: 116,
+                F6: 117,
+                F7: 118,
+                F8: 119,
+                F9: 120,
+                F10: 121,
+                F11: 122,
+                F12: 123,
 
-                W: 87, // "UP"
-                S: 83, // "DOWN"
-                A: 65, // "LEFT"
-                D: 68, // "RIGHT"
+                A: 65,
+                B: 66,
+                C: 67,
+                D: 68,
+                E: 69,
+                F: 70,
+                G: 71,
+                H: 72,
+                I: 73,
+                J: 74,
+                K: 75,
+                L: 76,
+                M: 77,
+                N: 78,
+                O: 79,
+                P: 80,
+                Q: 81,
+                R: 82,
+                S: 83,
+                T: 84,
+                U: 85,
+                V: 86,
+                W: 87,
+                X: 88,
+                Y: 89,
+                Z: 90,
 
                 SPACEBAR: 32,
 
