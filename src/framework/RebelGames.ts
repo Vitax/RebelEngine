@@ -1,7 +1,7 @@
 /*
  *      Author:         Caglar Özel
  *      Date:           19.October.2016
- *      Copyb:
+ *      Copyright:
 */
 
 
@@ -241,8 +241,36 @@ class Matrix3 {
                 return result;
         }
 
-        static subtract() {
+        static divide(a: Matrix3, b: Matrix3) {
+                var result: Matrix3 = Matrix3.identify();
 
+                for(var row = 0; row < 3; row++) {
+                        for(var col = 0; col < 3; col++) {
+                                var sum = 0;
+                                for(var e = 0; e < 3; e++) {
+                                        sum += a[e + row * 3] / b[col + e * 3];
+                                }
+                                result[col + row * 3] = sum;
+                        }
+                }
+
+                return result;
+        }
+
+        static subtract(a: Matrix3, b: Matrix3) {
+                var result: Matrix3 = Matrix3.identify();
+
+                for(var row = 0; row < 3; row++) {
+                        for(var col = 0; col < 3; col++) {
+                                var sum = 0;
+                                for(var e = 0; e < 3; e++) {
+                                        sum += a[e + row * 3] - b[col + e * 3];
+                                }
+                                result[col + row * 3] = sum;
+                        }
+                }
+
+                return result;
         }
 
         static rotate(rotation: Vector3) {
@@ -303,8 +331,8 @@ class Matrix4 {
                                 for(var e = 0; e < 4; e++) {
                                         sum += a[e + row * 4] * b[col + e * 4];
                                 }
+                                result[col + row * 4] = sum;
                         }
-                        result[col + row * 4] = sum;
                 }
 
                 return result;
@@ -319,8 +347,8 @@ class Matrix4 {
                                 for(var e = 0; e < 4; e++) {
                                         sum += a[e + row * 4] / b[col + e * 4];
                                 }
+                                result[col + row * 4] = sum;
                         }
-                        result[col + row * 4] = sum;
                 }
 
                 return result;
@@ -335,15 +363,15 @@ class Matrix4 {
                                 for(var e = 0; e < 4; e++) {
                                         sum += a[e + row * 4] - b[col + e * 4];
                                 }
+                                result[col + row * 4] = sum;
                         }
-                        result[col + row * 4] = sum;
                 }
 
                 return result;
         }
 
         static translate(translation: Vector3) {
-                var matrix = Matrix4.diagonal(1);
+                var matrix: Matrix4 = Matrix4.identify();
 
                 matrix[0 + 3 * 4] = translation.x;
                 matrix[1 + 3 * 4] = translation.y;
@@ -353,7 +381,7 @@ class Matrix4 {
         }
 
         static scale(scale : Vector3) {
-                var matrix = Matrix4.diagonal(1);
+                var matrix: Matrix4 = Matrix4.identify();
 
                 matrix[0 + 0 * 4] = scale.x;
                 matrix[1 + 1 * 4] = scale.y;
@@ -363,6 +391,7 @@ class Matrix4 {
         }
 
         static rotate(rotation: Vector3) {
+                var angle: number;
 
         }
 
@@ -372,11 +401,25 @@ class Matrix4 {
         }
 
         static perspMatrix(fov: number, aspect: number, near: number, far: number, dest: Matrix4) {
+                dest = Matrix4.identify();
+
 
         }
 
         static lookAt(cameraPos: Vector3, target: Vector3, up: Vector3, dest: Matrix4) {
 
+        }
+}
+
+class Scene {
+        constructor() { }
+
+
+}
+
+class m_Math {
+        static toRadian(angle: number) {
+                return angle * ( Math.PI / 180);
         }
 }
 
@@ -390,6 +433,53 @@ class Camera {
 
 }
 
+class Shader {
+        constructor() { }
+
+        static createShader(webGL, sourceCode, type) {
+                var shader = webGL.createShader(type);
+
+                webGL.shaderSource(shader, sourceCode);
+                webGL.compileShader(shader);
+
+                if(!webGL.getShaderParameter(shader, webGL.COMPILE_STATUS)) {
+                        var info = webGL.getShaderInfoLog(shader);
+                        throw "Could not compile WebGL program. \n\n" + info;
+                }
+
+                return shader;
+        }
+
+        static loadShader(webGL, vertexShader, fragmentShader) {
+                var program = webGL.createProgram();
+
+                webGL.attachShader(program, vertexShader);
+                webGL.attachShader(program, fragmentShader);
+
+                game.webGL.linkProgram(program);
+
+                if ( !game.webGL.getProgramParameter( program, game.webGL.LINK_STATUS) ) {
+                        var info = game.webGL.getProgramInfoLog(program);
+                        throw "Could not compile WebGL program. \n\n" + info;
+                }
+
+                return program;
+        }
+}
+
+class ShaderFactory {
+        static vertexShaderSource =
+        "attribute vec4 a_position;\n"+
+        "void main() {\n"+
+        "       gl_Position = a_position;\n"+
+        "}\n";
+
+        static fragmentShaderSource =
+        "void main() {\n"+
+        "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"+
+        "}\n";
+}
+
 class Canvas {
         constructor() { }
 
@@ -400,6 +490,7 @@ class Canvas {
                 var canvas = document.createElement("canvas");
                 var webGL = canvas.getContext("webgl");
 
+                webGL.clearDepth(1.0);
                 webGL.enable(webGL.DEPTH_TEST);
 
                 canvas.width = width;
@@ -408,32 +499,19 @@ class Canvas {
                 document.body.appendChild(canvas);
 
                 if(!webGL) {
-                        console.log("Could not initiate webGL Canvas");
-                        return;
+                        throw "Could not initiate webGL Canvas";
                 }
 
-                console.log("initialized WebGL canvas !");
                 return webGL;
         }
 }
 
 class Utils{
-        static read_file() {
+        static read_file(file_path: string) {
 
         }
 }
 
-class Shader {
-        constructor() { }
-
-        static loadFromFile(vertexPath: string, fragmentPath: string) {
-
-        }
-
-        static load() {
-
-        }
-}
 
 //   ##  ###     ##  ######  ##   ##  ########
 //   ##  ## ##   ##  ##  ##  ##   ##     ##
@@ -445,11 +523,9 @@ class InputHandler {
         constructor() {
                 window.addEventListener('keyup', this.onKeyUp);
                 window.addEventListener('keydown', this.onKeyDown);
-                console.log("InputHandler instance created!");
         }
 
         public Keys = {
-                // Keyboard
                 ZERO: 48,
                 ONE: 49,
                 TWO: 50,
@@ -501,9 +577,10 @@ class InputHandler {
                 Y: 89,
                 Z: 90,
 
+                TAB: 9,
+                CAPS: 20,
                 SPACEBAR: 32,
 
-                // Arrow Keys
                 LEFT: 37,
                 UP: 38,
                 RIGHT: 39,
