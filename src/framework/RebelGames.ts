@@ -274,7 +274,6 @@ class Matrix3 {
         }
 
         static rotate(rotation: Vector3) {
-
         }
 
         static translate(translation: Vector3) {
@@ -390,23 +389,62 @@ class Matrix4 {
                 return matrix;
         }
 
-        static rotate(rotation: Vector3) {
-                var angle: number;
+        static angle_rotate(angle: number, rotation: Vector3) {
+                var result: Matrix4 = Matrix4.identify();
+
+                var r = m_Math.toRadian(angle);
+                var c = Math.cos(r);
+                var s = Math.sin(r);
+                var omc = 1 - c;
+
+                var x = rotation.x;
+                var y = rotation.y;
+                var z = rotation.z;
+
+                result[0 + 0 * 4] = x * x * omc + c;
+                result[0 + 1 * 4] = x * y * omc + y * s;
+                result[0 + 2 * 4] = z * x * omc - y * s;
+
+                result[1 + 0 * 4] = x * y * omc - z * s;
+                result[1 + 1 * 4] = y * y * omc + c;
+                result[1 + 2 * 4] = z * y * omc + x * s;
+
+                result[2 + 0 * 4] = x * z * omc + y * s;
+                result[2 + 1 * 4] = y * z * omc - x * s;
+                result[2 + 2 * 4] = z * z * omc + c;
+
+                return result;
+        }
+
+        static vector_rotate(rotation: Vector3) {
+                var result : Matrix4 = Matrix4.identify();
+
+                // angle variables
+                var cosX = Math.cos(rotation.x);
+                var sinX = Math.sin(rotation.x);
+
+                var cosY = Math.cos(rotation.y);
+                var sinY = Math.sin(rotation.y);
+
+                var cosZ = Math.cos(rotation.z);
+                var sinZ = Math.sin(rotation.z);
 
         }
 
-        static orthoMatrix(left: number, right: number, bottom: number, top: number, near: number, far: number, dest: Matrix4 ) {
-                dest = Matrix4.identify();
+        static orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number) {
+                var result: Matrix4 = Matrix4.identify();
 
         }
 
-        static perspMatrix(fov: number, aspect: number, near: number, far: number, dest: Matrix4) {
-                dest = Matrix4.identify();
+        static perspective(fov: number, aspect: number, near: number, far: number) {
+                var result: Matrix4 = Matrix4.identify();
 
 
         }
 
-        static lookAt(cameraPos: Vector3, target: Vector3, up: Vector3, dest: Matrix4) {
+        static lookAt(cameraPos: Vector3, target: Vector3, up: Vector3) {
+                var result: Matrix4 = Matrix4.identify();
+
 
         }
 }
