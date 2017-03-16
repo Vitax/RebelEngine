@@ -34,16 +34,16 @@ class Vector2 {
                 return new Vector2(a.x / b.x, a.y / b.y);
         }
 
-        static dot(a: Vector2, b: Vector2) {
+        public dot(a: Vector2, b: Vector2) {
                 return a.x * b.x + a.y * b.y;
         }
 
-        static magnitute(vector: Vector2) {
+        public magnitute(vector: Vector2) {
                 return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
         }
 
-        static normalize(vector: Vector2) {
-                var mag = Vector2.magnitute(vector);
+        public normalize(vector: Vector2) {
+                var mag = Vector2.prototype.magnitute(vector);
 
                 return new Vector2(vector.x / mag, vector.y / mag);
         }
@@ -67,6 +67,30 @@ class Vector2 {
                         return true;
                 else
                         return false;
+        }
+
+        public up() {
+                return new Vector2(0.0, 1.0);
+        }
+
+        public down() {
+                return new Vector2(0.0, -1.0);
+        }
+
+        public left() {
+                return new Vector2(1.0, 0.0);
+        }
+
+        public right() {
+                return new Vector2(-1.0, 0.0);
+        }
+
+        public zero() {
+                return new Vector2(0.0, 0.0);
+        }
+
+        public one() {
+                return new Vector2(1.0, 1.0);
         }
 }
 
@@ -93,18 +117,18 @@ class Vector3 {
                 return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
         }
 
-        static dot(a: Vector3, b: Vector3) {
+        public dot(a: Vector3, b: Vector3) {
                 return b.x * a.x + b.y * a.y + b.z * a.z;
         }
 
-        static magnitute(vector: Vector3) {
-                return  Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+        public magnitute(a: Vector3) {
+                return  Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
         }
 
-        static normalize(vector: Vector3) {
-                var mag = Vector2.magnitute(vector);
+        public normalize(a: Vector3) {
+                var mag = Vector3.prototype.magnitute(a);
 
-                return new Vector3(vector.x / mag, vector.y / mag, vector.z / mag);
+                return new Vector3(a.x / mag, a.y / mag, a.z / mag);
         }
 
         static cross(a: Vector3, b: Vector3) {
@@ -159,16 +183,16 @@ class Vector4 {
                 return new Vector4(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w);
 
         }
-        static dot(a: Vector4, b: Vector4) {
+        public dot(a: Vector4, b: Vector4) {
                 return b.x * a.x + b.y * a.y + b.z * a.z + b.w * a.w;
         }
 
-        static magnitude(vector : Vector4) {
+        public magnitude(vector : Vector4) {
                 return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w);
         }
 
-        static normalize(vector: Vector4) {
-                var mag = Vector4.magnitude(vector);
+        public normalize(vector: Vector4) {
+                var mag = Vector4.prototype.magnitude(vector);
 
                 return new Vector4(vector.x / mag, vector.y / mag, vector.z / mag, vector.w / mag);
         }
@@ -203,26 +227,22 @@ class Vector4 {
 }
 
 class Matrix3 {
-        private elements = new Float32Array(9);
-
-        constructor(elements: number[] = []) {
-                for(var i = 0; i < 9; i++) {
-                        elements[i] = 0;
-                }
+        constructor(elements = new Float32Array(16)) {
+                elements.fill(0, 0, 15);
         }
 
         static diagonal(diagonal: number) {
-                for (var i = 0; i < 3 * 3; i++) {
-                        this[i] = 0;
-                }
+                var result:Matrix3 = new Matrix3();
 
-                this[0 + 0 * 3] = diagonal;
-                this[1 + 1 * 3] = diagonal;
-                this[2 + 2 * 3] = diagonal;
+                result[0 + 0 * 3] = diagonal;
+                result[1 + 1 * 3] = diagonal;
+                result[2 + 2 * 3] = diagonal;
+
+                return result;
         }
 
         static identify() {
-                return new Matrix3.diagonal(1);
+                return Matrix3.diagonal(1.0);
         }
 
         static multiply(a: Matrix3, b: Matrix3) {
@@ -273,10 +293,11 @@ class Matrix3 {
                 return result;
         }
 
-        static rotate(rotation: Vector3) {
+        public rotate(rotation: Vector3) {
+
         }
 
-        static translate(translation: Vector3) {
+        public translate(translation: Vector3) {
                 var result: Matrix3 = Matrix3.identify();
 
                 result[0 + 2 * 3] = translation.x;
@@ -286,7 +307,7 @@ class Matrix3 {
                 return result;
         }
 
-        static scale(scale : Vector3) {
+        public scale(scale : Vector3) {
                 var result: Matrix3 = Matrix3.identify();
 
                 result[0 + 0 * 3] = scale.x;
@@ -298,27 +319,23 @@ class Matrix3 {
 }
 
 class Matrix4 {
-        private elements = new Float32Array(16);
-
-        constructor(elements: number[] = []) {
-                for(var i = 0; i < 16; i++) {
-                        elements[i] = 0;
-                }
+        constructor(elements = new Float32Array(16)) {
+                elements.fill(0.0, 0, 15);
         }
 
         static diagonal(diagonal: number) {
-                for (var i = 0; i < 4 * 4; i++) {
-                        this[i] = 0;
-                }
+                var result: Matrix4 = new Matrix4();
 
-                this[0 + 0 * 4] = diagonal;
-                this[1 + 1 * 4] = diagonal;
-                this[2 + 2 * 4] = diagonal;
-                this[3 + 3 * 4] = diagonal;
+                result[0 + 0 * 4] = diagonal;
+                result[1 + 1 * 4] = diagonal;
+                result[2 + 2 * 4] = diagonal;
+                result[3 + 3 * 4] = diagonal;
+
+                return result;
         }
 
         static identify() {
-                return new Matrix4.diagonal(1);
+                return Matrix4.diagonal(1.0);
         }
 
         static multiply(a: Matrix4, b: Matrix4) {
@@ -369,7 +386,7 @@ class Matrix4 {
                 return result;
         }
 
-        static translate(translation: Vector3) {
+        public translate(translation: Vector3) {
                 var matrix: Matrix4 = Matrix4.identify();
 
                 matrix[0 + 3 * 4] = translation.x;
@@ -379,7 +396,7 @@ class Matrix4 {
                 return matrix;
         }
 
-        static scale(scale : Vector3) {
+        public scale(scale : Vector3) {
                 var matrix: Matrix4 = Matrix4.identify();
 
                 matrix[0 + 0 * 4] = scale.x;
@@ -389,10 +406,10 @@ class Matrix4 {
                 return matrix;
         }
 
-        static angle_rotate(angle: number, rotation: Vector3) {
+        public angle_rotate(angle: number, rotation: Vector3) {
                 var result: Matrix4 = Matrix4.identify();
 
-                var r = m_Math.toRadian(angle);
+                var r = m_Math.prototype.toRadian(angle);
                 var c = Math.cos(r);
                 var s = Math.sin(r);
                 var omc = 1 - c;
@@ -416,7 +433,7 @@ class Matrix4 {
                 return result;
         }
 
-        static vector_rotate(rotation: Vector3) {
+        public vector_rotate(rotation: Vector3) {
                 var result : Matrix4 = Matrix4.identify();
 
                 // angle variables
@@ -431,21 +448,30 @@ class Matrix4 {
 
         }
 
-        static orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number) {
+        public orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number) {
                 var result: Matrix4 = Matrix4.identify();
+
+                result[0 + 0 * 4] = 2 / (right - left);
+                result[3 + 0 * 4] = -((right + left) / (right - left));
+                result[1 + 1 * 4] = 2 / (top - bottom);
+                result[3 + 1 * 4] = -((top + bottom) / (top - bottom));
+                result[2 + 2 * 4] = -2 / (far - near);
+                result[2 + 3 * 4] = -((far + near) / (far - near));
+
+                return result;
+        }
+
+        public perspective(fov: number, aspect: number, near: number, far: number) {
+                var result: Matrix4 = Matrix4.identify();
+
+                result[0 + 0 * 4] = 1 / (aspect * Math.tan(fov / 2));
 
         }
 
-        static perspective(fov: number, aspect: number, near: number, far: number) {
+        public lookAt(cameraPos: Vector3, target: Vector3, up: Vector3) {
                 var result: Matrix4 = Matrix4.identify();
 
-
-        }
-
-        static lookAt(cameraPos: Vector3, target: Vector3, up: Vector3) {
-                var result: Matrix4 = Matrix4.identify();
-
-
+                
         }
 }
 
@@ -456,7 +482,7 @@ class Scene {
 }
 
 class m_Math {
-        static toRadian(angle: number) {
+        public toRadian(angle: number) {
                 return angle * ( Math.PI / 180);
         }
 }
@@ -474,7 +500,7 @@ class Camera {
 class Shader {
         constructor() { }
 
-        static createShader(webGL, sourceCode, type) {
+        public createShader(webGL, sourceCode, type) {
                 var shader = webGL.createShader(type);
 
                 webGL.shaderSource(shader, sourceCode);
@@ -488,7 +514,7 @@ class Shader {
                 return shader;
         }
 
-        static loadShader(webGL, vertexShader, fragmentShader) {
+        public loadShader(webGL, vertexShader, fragmentShader) {
                 var program = webGL.createProgram();
 
                 webGL.attachShader(program, vertexShader);
@@ -506,13 +532,13 @@ class Shader {
 }
 
 class ShaderFactory {
-        static vertexShaderSource =
+        public vertexShaderSource =
         "attribute vec4 a_position;\n"+
         "void main() {\n"+
         "       gl_Position = a_position;\n"+
         "}\n";
 
-        static fragmentShaderSource =
+        public fragmentShaderSource =
         "void main() {\n"+
         "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"+
         "}\n";
@@ -545,11 +571,10 @@ class Canvas {
 }
 
 class Utils{
-        static read_file(file_path: string) {
+        public read_file(file_path: string) {
 
         }
 }
-
 
 //   ##  ###     ##  ######  ##   ##  ########
 //   ##  ## ##   ##  ##  ##  ##   ##     ##

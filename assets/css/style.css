@@ -6,6 +6,5 @@ html, body {
 
 canvas {
         background-color: grey;
-        width: inherit;
-        height: inherit;
+        display: block;
 }

@@ -1,6 +1,6 @@
 class game {
-        static webGL;
         static input;
+        static webGL;
         static player;
 
         constructor() { }
@@ -11,7 +11,9 @@ class game {
         }
 
         static draw() {
-
+                var a : Vector2 = new Vector2(1.0,0.0);
+                var b : Vector2 = new Vector2(1.0,1.0);
+                a = Vector2.add(a, b);
         }
 
         static tick()  {
