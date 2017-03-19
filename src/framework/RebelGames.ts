@@ -97,6 +97,10 @@ class Vector2 {
 class Vector3 {
         constructor(public x: number, public y: number, public z: number) { }
 
+        static convertVec2(a : Vector2) {
+                return new Vector3(a.x, a.y, 1.0);
+        }
+
         static add(a: Vector3, b: Vector3) {
                 return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
         }
@@ -158,10 +162,49 @@ class Vector3 {
                 else
                         return false;
         }
+
+        public up() {
+                return new Vector3(0.0, 1.0, 0.0);
+        }
+        public down() {
+                return new Vector3(0.0, -1.0, 0.0);
+        }
+
+        public left() {
+                return new Vector3(1.0, 0.0, 0.0);
+        }
+
+        public right() {
+                return new Vector3(-1.0, 0.0, 0.0);
+        }
+
+        public front() {
+                return new Vector3(0.0, 0.0, 1.0);
+        }
+
+        public back() {
+                return new Vector3(0.0, 0.0, -1.0);
+        }
+
+        public zero() {
+                return new Vector3(0.0, 0.0, 0.0);
+        }
+
+        public one() {
+                return new Vector3(1.0, 1.0, 1.0);
+        }
 }
 
 class Vector4 {
         constructor(public x: number, public y: number, public z: number, public w: number) { }
+
+        static convertVec2(a: Vector2) {
+                return new Vector4(a.x, a.y, 1.0, 1.0);
+        }
+
+        static convertVec3(a: Vector3) {
+                return new Vector4(a.x, a.y, a.z, 1.0);
+        }
 
         static add(a: Vector4, b: Vector4) {
                 return new Vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
@@ -456,7 +499,7 @@ class Matrix4 {
                 result[1 + 1 * 4] = 2 / (top - bottom);
                 result[3 + 1 * 4] = -((top + bottom) / (top - bottom));
                 result[2 + 2 * 4] = -2 / (far - near);
-                result[2 + 3 * 4] = -((far + near) / (far - near));
+                result[3 + 2 * 4] = -((far + near) / (far - near));
 
                 return result;
         }
@@ -465,20 +508,14 @@ class Matrix4 {
                 var result: Matrix4 = Matrix4.identify();
 
                 result[0 + 0 * 4] = 1 / (aspect * Math.tan(fov / 2));
-
+                
         }
 
         public lookAt(cameraPos: Vector3, target: Vector3, up: Vector3) {
                 var result: Matrix4 = Matrix4.identify();
 
-                
+
         }
-}
-
-class Scene {
-        constructor() { }
-
-
 }
 
 class m_Math {

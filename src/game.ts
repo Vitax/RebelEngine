@@ -14,6 +14,9 @@ class game {
                 var a : Vector2 = new Vector2(1.0,0.0);
                 var b : Vector2 = new Vector2(1.0,1.0);
                 a = Vector2.add(a, b);
+
+                var c : Vector3 = Vector3.convertVec2(a);
+                var m : Matrix4 = Matrix4.identify();
         }
 
         static tick()  {
