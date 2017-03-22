@@ -432,9 +432,9 @@ class Matrix4 {
         public translate(translation: Vector3) {
                 var matrix: Matrix4 = Matrix4.identify();
 
-                matrix[0 + 3 * 4] = translation.x;
-                matrix[1 + 3 * 4] = translation.y;
-                matrix[2 + 3 * 4] = translation.z;
+                matrix[3 + 0 * 4] = translation.x;
+                matrix[3 + 1 * 4] = translation.y;
+                matrix[3 + 2 * 4] = translation.z;
 
                 return matrix;
         }
@@ -452,7 +452,7 @@ class Matrix4 {
         public angle_rotate(angle: number, rotation: Vector3) {
                 var result: Matrix4 = Matrix4.identify();
 
-                var r = m_Math.prototype.toRadian(angle);
+                var r = m_Math.toRadian(angle);
                 var c = Math.cos(r);
                 var s = Math.sin(r);
                 var omc = 1 - c;
@@ -491,7 +491,7 @@ class Matrix4 {
 
         }
 
-        public orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number) {
+        static orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number) {
                 var result: Matrix4 = Matrix4.identify();
 
                 result[0 + 0 * 4] = 2 / (right - left);
@@ -504,22 +504,29 @@ class Matrix4 {
                 return result;
         }
 
-        public perspective(fov: number, aspect: number, near: number, far: number) {
+        static perspective(fov: number, aspectRatio: number, near: number, far: number) {
                 var result: Matrix4 = Matrix4.identify();
+                var thfov = Math.tan(m_Math.toRadian(fov / 2));
 
-                result[0 + 0 * 4] = 1 / (aspect * Math.tan(fov / 2));
-                
+                result[0 + 0 * 4] = 1 / (thfov * aspectRatio);
+                result[1 + 1 * 4] = 1 / thfov;
+                result[2 + 2 * 4] = (-near - far) / (near - far);
+                result[2 + 3 * 4] = 2 * far * near / (near - far);
+                result[3 + 2 * 4] = 1.0;
+                result[3 + 3 * 4] = 0;
+
+                return result;
         }
 
-        public lookAt(cameraPos: Vector3, target: Vector3, up: Vector3) {
+        static lookAt(cameraPos: Vector3, target: Vector3, up: Vector3) {
                 var result: Matrix4 = Matrix4.identify();
 
-
+                return result;
         }
 }
 
 class m_Math {
-        public toRadian(angle: number) {
+        static toRadian(angle: number) {
                 return angle * ( Math.PI / 180);
         }
 }
@@ -534,48 +541,68 @@ class Camera {
 
 }
 
+class GameLoop {
+        static gameLoop(update: Function, render: Function) {
+
+
+        }
+}
+
 class Shader {
         constructor() { }
 
-        public createShader(webGL, sourceCode, type) {
-                var shader = webGL.createShader(type);
+        static createShader(gl, sourceCode, type) {
+                var shader = gl.createShader(type);
 
-                webGL.shaderSource(shader, sourceCode);
-                webGL.compileShader(shader);
+                gl.shaderSource(shader, sourceCode);
+                gl.compileShader(shader);
 
-                if(!webGL.getShaderParameter(shader, webGL.COMPILE_STATUS)) {
-                        var info = webGL.getShaderInfoLog(shader);
-                        throw "Could not compile WebGL program. \n\n" + info;
+                if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                        var info = gl.getShaderInfoLog(shader);
+                        throw "Could not compile gl program. \n\n" + info;
                 }
 
-                return shader;
+                var succes = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+
+                if(succes) {
+                        return shader;
+                }
+
+                gl.deleteShader(shader);
         }
 
-        public loadShader(webGL, vertexShader, fragmentShader) {
-                var program = webGL.createProgram();
+        static createShaderProgram(gl, vertexShader, fragmentShader) {
+                var program = gl.createProgram();
 
-                webGL.attachShader(program, vertexShader);
-                webGL.attachShader(program, fragmentShader);
+                gl.attachShader(program, vertexShader);
+                gl.attachShader(program, fragmentShader);
 
-                game.webGL.linkProgram(program);
+                gl.linkProgram(program);
 
-                if ( !game.webGL.getProgramParameter( program, game.webGL.LINK_STATUS) ) {
-                        var info = game.webGL.getProgramInfoLog(program);
-                        throw "Could not compile WebGL program. \n\n" + info;
+                if ( !gl.getProgramParameter( program, gl.LINK_STATUS) ) {
+                        var info = gl.getProgramInfoLog(program);
+                        throw "Could not compile gl program. \n\n" + info;
                 }
 
-                return program;
+                var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+
+                if(success) {
+                        return program;
+                }
+
+                gl.deleteProgram(program);
         }
 }
 
 class ShaderFactory {
-        public vertexShaderSource =
+        static vertexShaderSource =
         "attribute vec4 a_position;\n"+
+        "uniform mat4 u_matrix" +
         "void main() {\n"+
-        "       gl_Position = a_position;\n"+
+        "       gl_Position = u_matrix * a_position;\n"+
         "}\n";
 
-        public fragmentShaderSource =
+        static fragmentShaderSource =
         "void main() {\n"+
         "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"+
         "}\n";
@@ -589,21 +616,24 @@ class Canvas {
                 var height = window.innerHeight;
 
                 var canvas = document.createElement("canvas");
-                var webGL = canvas.getContext("webgl");
+                var gl = canvas.getContext("experimental-webgl");
+                canvas.oncontextmenu = function(e) {
+                        e.preventDefault();
+                }
 
-                webGL.clearDepth(1.0);
-                webGL.enable(webGL.DEPTH_TEST);
+                gl.clearDepth(1.0);
+                gl.enable(gl.DEPTH_TEST);
 
                 canvas.width = width;
                 canvas.height = height;
 
                 document.body.appendChild(canvas);
 
-                if(!webGL) {
-                        throw "Could not initiate webGL Canvas";
+                if(!gl) {
+                        throw "Could not initiate gl Canvas";
                 }
 
-                return webGL;
+                return gl;
         }
 }
 
@@ -623,10 +653,11 @@ class InputHandler {
         constructor() {
                 window.addEventListener('keyup', this.onKeyUp);
                 window.addEventListener('keydown', this.onKeyDown);
+                window.addEventListener('mousedown', this.onMouseDown);
+                window.addEventListener('mouseup', this.onMouseUp);
         }
 
-        public Keys = {
-                ZERO: 48,
+        public Keys = {                ZERO: 48,
                 ONE: 49,
                 TWO: 50,
                 THREE: 51,
@@ -687,6 +718,12 @@ class InputHandler {
                 DOWN: 40
         }
 
+        public MouseButtons = {
+                RIGHT : 0,
+                MIDDLE: 1,
+                LEFT: 2
+        }
+
         private _pressed: {[keyCode: number] : any;} = {};
 
         public keyPressed = (keyCode: number) => {
@@ -701,5 +738,19 @@ class InputHandler {
         private onKeyDown = (event: KeyboardEvent) : void => {
                 event.preventDefault();
                 this._pressed[event.keyCode] = true;
+        }
+
+        public mousePressed = (keyCode: number) => {
+                return this._pressed[keyCode];
+        }
+
+        private onMouseDown = (event: MouseEvent) : void => {
+                event.preventDefault();
+                this._pressed[event.button] = true;
+        }
+
+        private onMouseUp = (event : MouseEvent) : void => {
+                event.preventDefault();
+                this._pressed[event.button] = false;
         }
 }
