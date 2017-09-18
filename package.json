@@ -1,0 +1,26 @@
+{
+    "name": "Rebel-Engine",
+    "author": "Caglar Özel",
+    "version": "1.0.0",
+    "private": true,
+    "engines": {
+        "node": ">=8.1.4"
+    },
+    "scripts": {
+        "start": "tsc && npm run tsc:w ",
+        "build:aot": "ngc -p tsconfig-aot.json && rollup -c rollup-config.js",
+        "tsc": "tsc",
+        "tsc:w": "tsc -w"
+    },
+    "devDependencies": {
+        "rollup": "^0.40.0",
+        "rollup-plugin-commonjs": "^7.0.0",
+        "rollup-plugin-node-resolve": "^2.0.0",
+        "rollup-plugin-uglify": "^1.0.1",
+        "tslint": "^3.15.1",
+        "typescript": "^2.1.6"
+    },
+    "dependencies": {
+        "ts-loader": "^2.3.4"
+    }
+}
