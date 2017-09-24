@@ -5,47 +5,67 @@ import { Vector2 } from './Maths/Vector2'
 import { Vector3 } from './Maths/Vector3'
 
 class Engine {
-    constructor(private gl: WebGLRenderingContext, private input: InputHandler) { }
+    
+    private timeStamp: number = 1000 / 60;
+    private fps: number = 0;
+    private deltea: number = 0;
+    private lastFrameTimeMS: number = 0;
 
-    init() {
-        this.gl = Canvas.initWebGL(window.innerWidth, window.innerHeight);
-        this.input = new InputHandler();
+    private running: boolean = false;
+
+    private static inputHandler: InputHandler;
+    private static webGl: WebGLRenderingContext;
+    
+
+    private static draw() {
+            
     }
 
-    draw() {
-        var a: Vector2 = new Vector2(1.0, 0.0);
-        var b: Vector2 = new Vector2(1.0, 1.0);
-        a = Vector2.add(a, b);
-        
-        var c: Vector3 = Vector3.convertVec2(a);
-        var ms: Matrix4 = Matrix4.identify();
-    }
-
-    tick() {
-        if (this.input.keyPressed(this.input.Keys.UP)) {
+    private static update() {
+        if (this.inputHandler.keyPressed(InputHandler.KEYS.UP)) {
             console.log("up");
         }
 
-        if (this.input.keyPressed(this.input.Keys.DOWN)) {
+        if (this.inputHandler.keyPressed(InputHandler.KEYS.DOWN)) {
             console.log("down");
         }
 
-        if (this.input.keyPressed(this.input.Keys.LEFT)) {
+        if (this.inputHandler.keyPressed(InputHandler.KEYS.LEFT)) {
             console.log("left")
         }
 
-        if (this.input.keyPressed(this.input.Keys.RIGHT)) {
+        if (this.inputHandler.keyPressed(InputHandler.KEYS.RIGHT)) {
             console.log("right")
+        }
+
+        if(this.inputHandler.mousePressed(InputHandler.MOUSE_BUTTONS.LEFT)) {
+            console.log("left mouse button");            
         }
     }
 
-    run() {
-        // TODO: Figure out how a Engine loop works in TypeScript / WebGL
-        this.init();
-        window.setInterval(this.tick, 1000 / 30);
+    public static init() {
+        this.webGl = Canvas.initWebGL(window.innerWidth, window.innerHeight);
+        this.inputHandler = new InputHandler();
+        
+        var a: Vector2 = new Vector2(1.0, 0.0);
+        var b: Vector2 = new Vector2(1.0, 1.0);
+        var c: Vector3 = Vector3.convertVec2(a);
+
+        a = Vector2.add(a, b);
+
+        var ms: Matrix4 = Matrix4.identify();
+    }
+
+    public static run() {     
+        Engine.update();
+        Engine.draw();
+        
+        requestAnimationFrame(Engine.run);
     }
 }
 
 window.onload = () => {
-    this.run();
+    Engine.init();
+
+    requestAnimationFrame(Engine.run);
 }

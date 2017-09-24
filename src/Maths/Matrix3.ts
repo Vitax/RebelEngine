@@ -1,10 +1,9 @@
 import { Vector3 } from './Vector3'
 
-export class Matrix3 extends Float32Array {
+export class Matrix3 {
+    [k: number]: any;
 
     constructor() {
-        super(0);
-        
         var elements: Float32Array = new Float32Array(16)
         elements.fill(0, 0, 15);
     }

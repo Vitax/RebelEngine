@@ -6,7 +6,7 @@ export class InputHandler {
         window.addEventListener('mouseup', this.onMouseUp.bind(this));
     }
 
-    public Keys = {
+    public static KEYS = {
         ZERO: 48,
         ONE: 49,
         TWO: 50,
@@ -68,7 +68,7 @@ export class InputHandler {
         DOWN: 40
     }
 
-    public MouseButtons = {
+    public static MOUSE_BUTTONS = {
         RIGHT: 0,
         MIDDLE: 1,
         LEFT: 2

@@ -1,13 +1,12 @@
 import { Vector3 } from './Vector3'
 import { RE_Math } from './RE_Maths'
 
-export class Matrix4 extends Float32Array{
+export class Matrix4 {
+    [k: number]: any;
     
     constructor() {
-        super(0);
-        
         var elements = new Float32Array(16);
-        elements.fill(0.0, 0, 15);
+        elements.fill(0, 0, 15);
     }
 
     static diagonal(diagonal: number) {
