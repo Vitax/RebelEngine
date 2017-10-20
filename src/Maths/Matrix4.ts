@@ -72,6 +72,10 @@ export class Matrix4 {
         return result;
     }
 
+    static inverse(a: Matrix4) {
+        
+    }
+
     public translate(translation: Vector3) {
         var matrix: Matrix4 = Matrix4.identify();
 
