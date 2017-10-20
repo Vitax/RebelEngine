@@ -81,12 +81,10 @@ export class InputHandler {
     }
 
     private onKeyUp = (event: KeyboardEvent): void => {
-        event.preventDefault();
         delete this._pressed[event.keyCode];
     }
 
     private onKeyDown = (event: KeyboardEvent): void => {
-        event.preventDefault();
         this._pressed[event.keyCode] = true;
     }
 
@@ -95,12 +93,10 @@ export class InputHandler {
     }
 
     private onMouseDown = (event: MouseEvent): void => {
-        event.preventDefault();
         this._pressed[event.button] = true;
     }
 
     private onMouseUp = (event: MouseEvent): void => {
-        event.preventDefault();
         this._pressed[event.button] = false;
     }
 }
